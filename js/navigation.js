@@ -114,20 +114,6 @@
                 check_if_we_should_close_slideout();
 
             }
-        }).on('touchstart', function (e) {
-
-            /// todo:
-
-            'use strict'; //satisfy code inspectors
-            var link = $(this); //preselect the link
-            if (link.hasClass('already-touched')) {
-                return true;
-            } else {
-                link.addClass('already-touched');
-                $('a.taphover').not(this).removeClass('hover');
-                e.preventDefault();
-                return false; //extra, and to make sure the function has consistent return points
-            }
         });
 
 
