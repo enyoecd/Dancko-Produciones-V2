@@ -1272,3 +1272,92 @@ body:not(.home) .elementor-top-section:first-of-type .elementor-image img {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.58);
 }
+
+/* ==========================================================================
+   6. Floating Circular Play/Pause Audio Button (Bottom-Right Corner)
+   ========================================================================== */
+@keyframes dkAudioPulse {
+  0% {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38), 0 0 0 0 rgba(223, 193, 94, 0.55);
+  }
+  70% {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38), 0 0 0 12px rgba(223, 193, 94, 0);
+  }
+  100% {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38), 0 0 0 0 rgba(223, 193, 94, 0);
+  }
+}
+
+button.dk-audio-fab {
+  position: fixed !important;
+  right: 22px !important;
+  bottom: 22px !important;
+  z-index: 9990 !important;
+  width: 54px !important;
+  height: 54px !important;
+  min-width: 54px !important;
+  min-height: 54px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--dk-gold) !important;
+  background: rgba(11, 17, 32, 0.92) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--dk-gold) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38) !important;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+button.dk-audio-fab.is-playing {
+  animation: dkAudioPulse 2.4s infinite;
+}
+
+button.dk-audio-fab:hover,
+button.dk-audio-fab:focus-visible {
+  transform: scale(1.08);
+  background: var(--dk-gold) !important;
+  border-color: var(--dk-gold-hover) !important;
+  color: #0b1120 !important;
+  outline: none !important;
+}
+
+button.dk-audio-fab:active {
+  transform: scale(0.96);
+}
+
+.dk-audio-fab__icon {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  display: block;
+  pointer-events: none;
+}
+
+/* Optical centering for the play triangle inside the circle */
+.dk-audio-fab__icon--play {
+  transform: translateX(1px);
+}
+
+button.dk-audio-fab.is-playing .dk-audio-fab__icon--play {
+  display: none;
+}
+
+button.dk-audio-fab:not(.is-playing) .dk-audio-fab__icon--pause {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  button.dk-audio-fab {
+    right: 16px !important;
+    bottom: 16px !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+  }
+}

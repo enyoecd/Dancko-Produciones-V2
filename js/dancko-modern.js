@@ -214,4 +214,119 @@
       }
     });
   });
+
+  /* ------------------------------------------------------------------------
+   * 3. Floating Circular Play/Pause Button Synced with SoundCloud Player
+   * ------------------------------------------------------------------------ */
+  var audioFab = document.getElementById('dk-audio-fab');
+  var scIframe = document.getElementById('dk-soundcloud-iframe');
+
+  if (audioFab && scIframe) {
+    var isPlayingState = false;
+    var userPaused = false;
+    var scWidget = null;
+    var unlocked = false;
+
+    // El iframe nunca debe recibir foco (evita que el navegador desplace la página hasta él)
+    scIframe.setAttribute('tabindex', '-1');
+
+    // Ejecuta una acción y restaura la posición exacta de scroll si el navegador la movió
+    function keepScroll(action) {
+      var x = window.pageXOffset;
+      var y = window.pageYOffset;
+      var restore = function () {
+        if (window.pageYOffset !== y || window.pageXOffset !== x) {
+          window.scrollTo({ left: x, top: y, behavior: 'instant' });
+        }
+      };
+      action();
+      [0, 60, 150, 300, 600, 1000].forEach(function (ms) {
+        setTimeout(restore, ms);
+      });
+      requestAnimationFrame(restore);
+    }
+
+    function setAudioFabState(playing) {
+      isPlayingState = Boolean(playing);
+      audioFab.classList.toggle('is-playing', isPlayingState);
+      var label = isPlayingState ? 'Pausar música' : 'Reproducir música';
+      audioFab.setAttribute('aria-label', label);
+      audioFab.setAttribute('title', label);
+    }
+
+    setAudioFabState(false);
+
+    if (window.SC && typeof window.SC.Widget === 'function') {
+      scWidget = window.SC.Widget(scIframe);
+
+      scWidget.bind(window.SC.Widget.Events.READY, function () {
+        scWidget.bind(window.SC.Widget.Events.PLAY, function () {
+          setAudioFabState(true);
+        });
+        scWidget.bind(window.SC.Widget.Events.PAUSE, function () {
+          setAudioFabState(false);
+        });
+        scWidget.bind(window.SC.Widget.Events.FINISH, function () {
+          setAudioFabState(false);
+        });
+
+        // Intento de autoplay inmediato; si el navegador lo bloquea, queda en espera del primer gesto
+        keepScroll(function () {
+          scWidget.play();
+        });
+        setTimeout(function () {
+          scWidget.isPaused(function (paused) {
+            setAudioFabState(!paused);
+          });
+        }, 1500);
+      });
+    }
+
+    // Los navegadores solo permiten audio con sonido tras un gesto del usuario:
+    // al primer toque/clic/tecla en cualquier parte, arranca la música (si no la pausó a propósito)
+    function unlockAutoplay(e) {
+      if (unlocked) return;
+      if (e && e.target && audioFab.contains(e.target)) return;
+      unlocked = true;
+      ['pointerdown', 'touchend', 'keydown', 'click'].forEach(function (evt) {
+        document.removeEventListener(evt, unlockAutoplay, true);
+      });
+      if (scWidget && !userPaused) {
+        scWidget.isPaused(function (paused) {
+          if (paused) {
+            keepScroll(function () {
+              scWidget.play();
+            });
+          }
+        });
+      }
+    }
+    ['pointerdown', 'touchend', 'keydown', 'click'].forEach(function (evt) {
+      document.addEventListener(evt, unlockAutoplay, true);
+    });
+
+    // Evita que el botón tome foco con el mouse (otra causa de saltos de scroll)
+    audioFab.addEventListener('mousedown', function (e) {
+      e.preventDefault();
+    });
+
+    audioFab.addEventListener('click', function (e) {
+      e.preventDefault();
+      unlocked = true;
+      if (!scWidget) return;
+      keepScroll(function () {
+        scWidget.isPaused(function (paused) {
+          if (paused) {
+            userPaused = false;
+            scWidget.play();
+            setAudioFabState(true);
+          } else {
+            userPaused = true;
+            scWidget.pause();
+            setAudioFabState(false);
+          }
+        });
+      });
+    });
+  }
 })();

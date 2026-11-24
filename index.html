@@ -708,7 +708,7 @@ var stylepress_email = {"ajax_url":"https:\/\/danckoproducciones.cl\/wp-admin\/a
 				<div data-id="9dfe15f" class="elementor-element elementor-element-9dfe15f elementor-widget elementor-widget-audio" data-element_type="audio.default">
 				<div class="elementor-widget-container">
 						<div class="elementor-soundcloud-wrapper">
-				<iframe title="Candy Dulfer &amp; Dave Stewart - Lily Was Here by Mananito" width="525" height="200" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?visual=false&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F245407741&amp;show_artwork=false&amp;maxheight=788&amp;maxwidth=525&amp;auto_play=true&amp;buying=false&amp;liking=false&amp;download=false&amp;sharing=false&amp;show_comments=false&amp;show_playcount=false&amp;show_user=false&amp;color"></iframe>			</div>
+				<iframe id="dk-soundcloud-iframe" title="Candy Dulfer &amp; Dave Stewart - Lily Was Here by Mananito" width="525" height="200" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?visual=false&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F245407741&amp;show_artwork=false&amp;maxheight=788&amp;maxwidth=525&amp;auto_play=true&amp;buying=false&amp;liking=false&amp;download=false&amp;sharing=false&amp;show_comments=false&amp;show_playcount=false&amp;show_user=false&amp;color"></iframe>			</div>
 					</div>
 				</div>
 						</div>
@@ -943,6 +943,16 @@ var elementorFrontendConfig = {"isEditMode":"","is_rtl":"","breakpoints":{"xs":0
 			<span>Espa&ntilde;a 5888, Antofagasta &bull; +56 9 8369 0847</span>
 		</div>
 	</footer>
+	<button type="button" id="dk-audio-fab" class="dk-audio-fab is-playing" aria-label="Pausar m&uacute;sica" title="Pausar m&uacute;sica">
+		<svg class="dk-audio-fab__icon dk-audio-fab__icon--pause" viewBox="0 0 24 24" aria-hidden="true">
+			<rect x="6.5" y="5" width="4" height="14" rx="1.2"></rect>
+			<rect x="13.5" y="5" width="4" height="14" rx="1.2"></rect>
+		</svg>
+		<svg class="dk-audio-fab__icon dk-audio-fab__icon--play" viewBox="0 0 24 24" aria-hidden="true">
+			<path d="M8.2 5.4v13.2c0 .8.88 1.28 1.56.85l10.4-6.6a1 1 0 0 0 0-1.7L9.76 4.55a1 1 0 0 0-1.56.85z"></path>
+		</svg>
+	</button>
+	<script type="text/javascript" src="https://w.soundcloud.com/player/api.js"></script>
 	<script type="text/javascript" src="./js/dancko-modern.js"></script>
 	</body>
 </html>
